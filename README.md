@@ -1,0 +1,1 @@
+# meilisearch-scraper-kubernetes-cronjob
