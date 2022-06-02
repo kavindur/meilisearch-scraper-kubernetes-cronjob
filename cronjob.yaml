@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: meiliesearch-docs-scraper
+spec:
+  schedule: "0 */1 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: meiliesearch-docs-scraper
+            image: docker.devops.cambio.se/getmeili/docs-scraper:v0.10.4
+            imagePullPolicy: IfNotPresent
+            command:
+            - pipenv
+            - run
+            - ./docs_scraper
+            - ../docs-scraper-config/config.json
+            env:
+            - name: MEILISEARCH_HOST_URL
+              value: "https://host:port"
+            - name: MEILISEARCH_API_KEY
+              value: "master_key"
+            - name: DOCS_SCRAPER_BASICAUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: docs-basic-auth-secret
+                  key: username
+            - name: DOCS_SCRAPER_BASICAUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: docs-basic-auth-secret
+                  key: password
+            volumeMounts:
+            - name: config
+              mountPath: "/docs-scraper-config"
+              readOnly: true
+          restartPolicy: OnFailure
+          volumes:
+            - name: config
+              configMap:
+                name: docs-search-config                
