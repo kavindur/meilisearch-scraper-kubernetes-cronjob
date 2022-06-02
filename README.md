@@ -13,5 +13,5 @@ kubectl create secret generic docs-basic-auth-secret --from-literal=username=USE
 ## Notes
 - `MEILISEARCH_API_KEY` is to connect to meilisearch service
 - `DOCS_SCRAPER_BASICAUTH_USERNAME`, `DOCS_SCRAPER_BASICAUTH_PASSWORD` is to connect to the site that we perform scraping
-- ***Please make sure that we are using a scraper image version that is compatible with your meiliearch instance image version***. Otherwise you will get issues in scraping (mostly as if Bad Requests from scraper side)
+- ***Please make sure that you are using a scraper image version that is compatible with your meiliearch instance image version***. Otherwise you will get issues in scraping (mostly as if Bad Requests from scraper side)
   - e.g. `getmeili/docs-scraper:v0.10.4` is compatible with `getmeili/meilisearch:v0.19.0`
